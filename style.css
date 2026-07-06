@@ -54,9 +54,7 @@
 
 body {
     font-family:  'Noto Sans JP', Arial, sans-serif;
-    /* background-color: var(--bg-main); */
     background-color:#d8e6e9;
-    /* background: linear-gradient(135deg, #c1c6ce 0%, #d7d9db 100%); */
     background: linear-gradient(135deg, #4a8c91 0%, #803e68 100%);
     color: var(--text-main);
     display: flex;
@@ -80,13 +78,11 @@ header {
     font-family: 'Orbitron', sans-serif;
     font-size: 14px;
     font-weight: 900;
-    /* color: var(--text-main); */
     color: #4a8c91;
     letter-spacing: 0.5px;
     padding-left: 10px;
     border-left: 4px solid #4a8c91;
 }
-/* .lang-switcher { display: flex; gap: 6px; } */
 .lang-btn {
     background: var(--bg-main);
     border: 1px solid var(--border-flat);
@@ -109,7 +105,6 @@ header {
     display: flex;
     justify-content: center;
     width: 100%;
-    /* background-color: var(--bg-main); */
 }
 
 .main-container {
@@ -119,11 +114,10 @@ header {
     justify-content: center; /* 一体化させ中央へ寄せる */
     width: 100%;
     max-width: 1220px; /* ⚠️ 600px + 600px + 間隔固定20px = 1220px */
-    /* height: calc(100vh - 56px); */
     height: auto;
 }
 
-/* ⚙️ 左側：メニュー (最大横幅 600px) */
+/*  左側：メニュー (最大横幅 600px) */
 .control-panel {
     width: 50%;
     max-width: 600px; /* 👈 600pxに固定制限 */
@@ -134,14 +128,11 @@ header {
     overflow-y: auto;
 }
 
-/* 🖼️ 右側：プレビュー (最大横幅 600px / 間隔は20pxで完全固定) */
+/*  右側：プレビュー (最大横幅 600px / 間隔は20pxで完全固定) */
 .preview-panel {
     width: 50%;
-    max-width: 600px; /* 👈 600pxに固定制限 */
+    max-width: 600px;
     flex-shrink: 0;
-    /* background-color: var(--bg-main);
-    border-left: 20px solid var(--bg-main); 
-    border-right: 2px solid var(--border-flat); */
     padding: 20px 20px 20px 0;
     display: flex;
     flex-direction: column;
@@ -160,13 +151,11 @@ header {
     margin-top: 16px;
     width: 240px;
     height: 48px;
-    /* border: 1px solid #ffffff; */
     border-radius: 6px;
     font-size: 16px;
     font-family: 'Orbitron', sans-serif;
     cursor: pointer;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
-    /* transition: all 0.3s ease; */
 }
 .x-btn {
     position: relative; 
@@ -232,10 +221,8 @@ header {
 .section-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 14px;
-    /* color: var(--text-main); */
     color: #ffffff;
     margin: 18px 0 8px 0;
-    /* border-left: 4px solid var(--text-main); */
     border-left: 4px solid #00f0ff;
     padding-left: 8px;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
@@ -243,7 +230,6 @@ header {
 
 .form-group {
     margin-bottom: 10px;
-    /* background: var(--bg-main); */
     background-color: rgba(255, 255, 255, 0.15);
     padding: 8px 12px;
     border-radius: var(--radius-md);
@@ -255,8 +241,6 @@ label {
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 6px;
-    /* color: var(--text-muted); */
-    /* color:#3a3a3a; */
     color: #ffffff;
     text-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 }
@@ -265,9 +249,7 @@ label {
 input[type="text"], select, textarea {
     width: 100%;
     height: 42px; 
-    /* background-color: var(--bg-panel); */
     border: 2px solid var(--border-flat);
-    /* color: var(--text-main); */
     padding: 0 10px; /* 上下パディングを排しheightベースで中央寄せ */
     font-family: 'Noto Sans JP', sans-serif; 
     font-size: 14px; 
@@ -330,7 +312,6 @@ input[type="text"]:focus, select:focus, textarea:focus {
 .custom-file-upload input[type="file"] { display: none; }
 
 .comment-container {
-    /* background-color: var(--bg-panel); */
     border: 1px solid var(--border-flat);
     border-radius: var(--radius-sm);
     display: flex;
@@ -350,7 +331,6 @@ input[type="text"]:focus, select:focus, textarea:focus {
 .comment-font-select {
     border: none;
     border-top: 1px solid var(--border-flat);
-    /* background-color: var(--bg-main); */
     border-radius: 0 0 var(--radius-sm) var(--radius-sm);
     height: 34px; /* セレクトボックス単体で収まるサイズ */
     font-size: 13px;
@@ -376,25 +356,23 @@ input[type="range"] {
 .alphaWrap {
     padding-top: 10px;
     text-align: center;
-    /* font-family: "Orbitron", sans-serif; */
 }
 .alphaWrap span {
     display: none;
 }
 
-
-/* 🌟 プレイスタイル、好きな種族、ストーリーを「横3列」に完全固定 */
+/*  プレイスタイル、好きな種族、ストーリーを「横3列」に完全固定 */
 .checkbox-grid, .story-progress-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 👈 厳格に3等分 */
+    grid-template-columns: repeat(3, 1fr); /*  厳格に3等分 */
     gap: 0px 6px;
 }
 .checkbox-label, .radio-label {
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 38px; /* 👈 チェックボックスパネルの高さも一律統一 */
-    font-size: 13px; /* 👈 テキストのはみ出しを防ぐため13pxに固定 */
+    height: 38px; /*  チェックボックスパネルの高さも一律統一 */
+    font-size: 13px; /*  テキストのはみ出しを防ぐため13pxに固定 */
     background: var(--bg-panel);
     padding: 0 8px;
     border-radius: var(--radius-sm);
@@ -428,7 +406,6 @@ input[type="color"]::-webkit-color-swatch { border: none; }
     gap: 6px;
 }
 .palette-btn {
-    /* background: var(--bg-panel); */
     border: 1px solid var(--border-flat);
     padding: 6px;
     cursor: poin-triggerter;
@@ -451,9 +428,7 @@ input[type="color"]::-webkit-color-swatch { border: none; }
 .preview-wrapper {
     width: 100%;
     max-width: 560px;
-    /* background: var(--bg-panel); */
     background-color: rgba(255, 255, 255, 0.15);
-    /* border: 2px solid var(--border-flat); */
     padding: 12px;
     border-radius: var(--radius-md);
     text-align: center;
@@ -465,7 +440,6 @@ input[type="color"]::-webkit-color-swatch { border: none; }
     display: inline-block;
     font-size: 16px;
     font-weight: 900;
-    /* color: var(--text-main); */
     color: #ffffff;
     margin-top: 4px;
     margin-bottom: 6px;
@@ -479,7 +453,7 @@ input[type="color"]::-webkit-color-swatch { border: none; }
     background-color: #ebedf2;
     border: 1px solid var(--border-flat);
     border-radius: var(--radius-sm);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 .preview-image {
     width: 100%;
@@ -537,7 +511,7 @@ footer {
     background-color: rgba(0, 0, 0, 0.25);
 }
 
-/* 📱 画面幅が 768px 以下のスマホサイズ時の設定 */
+/*  画面幅が 768px 以下のスマホサイズ時の設定 */
 @media (max-width: 768px) {
     /* 1. 外側のボディとメインコンテナの余計な余白を完全にゼロにする */
     html, body, .app-container, .main-container { 
@@ -554,7 +528,7 @@ footer {
         overflow-x: hidden;        /* 横スクロール（ガタつき）を防止 */
     }
 
-    /* 🛠️ 2. コントロールパネル（画面横幅いっぱいにピタッと配置） */
+    /*  2. コントロールパネル（画面横幅いっぱいにピタッと配置） */
     .control-panel, .settings-panel, .form-container {
         order: 1; 
         width: 100% !important;        
@@ -569,7 +543,7 @@ footer {
         flex: none !important;
     }
 
-    /* 🖼️ 3. プレビュー画面（コントロールパネルの真下に配置） */
+    /*  3. プレビュー画面（コントロールパネルの真下に配置） */
     .preview-panel, .canvas-container {
         order: 2; 
         width: 100% !important;
@@ -586,7 +560,7 @@ footer {
         border-right: 0;
     }
 
-    /* 📝 4. フッター（プレビューの真下、最底面にピタッと配置） */
+    /*  4. フッター（プレビューの真下、最底面にピタッと配置） */
     footer, .footer-container {
         order: 3; 
         display: block !important;
@@ -611,7 +585,6 @@ footer {
         height: 100vh !important;
         z-index: 99999 !important; /* すべての要素の最前面 */
         background-color: rgb(255, 255, 255, 0.75);
-        /* var(--bg-main) !important; */
         padding: 20px 20px 20px 20px !important; /* 上部に閉じるボタン用の余白 */
         overflow-y: auto !important;
         display: flex;
@@ -641,9 +614,6 @@ footer {
         width: 100% !important;
         max-width: 100% !important;
     }
-    /* .mobile-overlay-preview .preview {
-        box-shadow: none !important;
-    } */
 
     /* 3. 画面の右下に固定配置する「プレビューを表示」ボタン */
     .mobile-preview-trigger {
@@ -652,12 +622,10 @@ footer {
         right: -2px;
         z-index: 9999;
         background-color: rgba(90, 90, 90, 0.95);
-        /* var(--text-main); */
         color: #ffffff;
         border: 2px solid var(--border-focus);
         padding: 12px 20px;
         border-radius: 10px 0 0 10px;
-        /* var(--radius-md); */
         font-family: 'Orbitron', sans-serif;
         font-size: 13px;
         font-weight: bold;
@@ -706,14 +674,13 @@ footer {
     }
 }
 
-
 /* ========================================================
-   🌐 言語切り替えボタン（サイバーテック・デザイン）
+    言語切り替えボタン（サイバーテック・デザイン）
    ======================================================== */
 
 /* 通常時（PC版）の非表示・表示の強制固定 */
 .lang-short {
-    display: none !important; /* ⚡ 競合に負けないよう important を追加 */
+    display: none !important; /*  競合に負けないよう important を追加 */
 }
 .lang-full {
     display: inline !important;
@@ -744,26 +711,22 @@ footer {
     border-radius: 2px;
     text-transform: uppercase;
 }
-
-/* マウスホバー時 */
 .lang-switcher button:hover {
     color: #00f0ff;
     background: rgba(0, 240, 255, 0.1);
 }
-
-/* ⚡ アクティブ（現在選択中）のボタンデザイン */
+/*  アクティブ（現在選択中）のボタンデザイン */
 .lang-switcher button.active {
     background: #00f0ff !important; /* ネオンブルーで満たす */
     color: #000000 !important;      /* 文字は反転して引き締まった黒に */
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); /* 選択中は強く光らせる */
 }
 
-
 /* ========================================================
    📱 スマホサイズ（幅 768px 以下）の切り替え
    ======================================================== */
 @media (max-width: 768px) {
-    /* ⚡ スマホの時はフル表記を完全に消し、ショート(JP/EN)だけを出す */
+    /*  スマホの時はフル表記を完全に消し、ショート(JP/EN)だけを出す */
     .lang-full {
         display: none !important;
     }
@@ -777,9 +740,6 @@ footer {
         font-size: 11px;
     }
 }
-
-
-
 .time-grid {
     
     display: grid;
@@ -787,9 +747,7 @@ footer {
     gap: 8px 4px;
     margin-top: 8px;
 }
-
 .time-selector-btn {
-    /* background: #fff; */
     border: none;
     border-radius: 2px;
     padding: 6px 0;
@@ -798,7 +756,6 @@ footer {
     border: 1px solid var(--border-flat);
     font-family: "Orbitron", sans-serif;
     font-weight: lighter;
-    /* color: #626973; */
     background-color: rgba(0, 0, 0, 0.25);
     color: #ffffff;
 }
@@ -812,26 +769,17 @@ footer {
     color: #fff;
     font-weight: bold;
 }
-
-
-/*  */
-
 .preview_fit {
     width: 100%;
     height: 100%;
     aspect-ratio: 1000/1545;
 }
 .preview {
-    /* background-color: aqua; */
     position: relative;
-    /* height: 772.5px ;
-    width: 500px ; */
     width: 100%;
     height: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
     margin: 0 auto;
-
-    
 }
 .preview canvas {        
     position: absolute;
