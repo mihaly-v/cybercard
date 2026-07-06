@@ -15,10 +15,10 @@ const CYBER_PANEL_CONFIG = {
     // ↔️ 横の間隔（各項目が右隣と被らないための列の幅）
     styleColumnWidth: 160,   // PLAY_STYLE（3列）の1列あたりの横幅
     raceColumnWidth: 120,    // FAV_RACE（4列）の1列あたりの横幅
-    phaseColumnWidth: 120,   // MSQ_PHASE（2列）の1列あたりの横幅
+    phaseColumnWidth: 140,   // MSQ_PHASE（2列）の1列あたりの横幅
     
     // 🔠 ラベルからパネル開始位置までの左マージン
-    offsetX: 160             // PLAY_STYLE: 等の文字から右にどれだけ離すか
+    offsetX: 180             // PLAY_STYLE: 等の文字から右にどれだけ離すか
 };
 // ==========================================
 
