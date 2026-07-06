@@ -791,3 +791,7 @@ footer {
     cursor: move;
     touch-action: none; /* ブラウザ標準のスクロール/ピンチズームと競合しないようにする */
 }
+
+.hidden {
+    display: none;
+}

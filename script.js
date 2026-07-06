@@ -560,12 +560,9 @@ window.addEventListener('touchend', handleEnd);
 // 6. QRコード生成
 // =================================================================
 function updateQrAndCard() {
-    const rawID = xTwitterIDInput.value.trim().replace('@', '');
-    if (!rawID) {
-        cachedQrSourceCanvas = null;
-        updateCard();
-        return;
-    }
+    const inputValue = xTwitterIDInput.value.trim().replace('@', '');
+    const rawID = inputValue === "" ? "FF_XIV_JP" : inputValue;
+
     hiddenQrContainer.innerHTML = "";
     // 安定して機能していた元の生成設定
     new QRCode(hiddenQrContainer, { text: `https://x.com/${rawID}`, width: 120, height: 120, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
@@ -1430,18 +1427,28 @@ document.addEventListener("DOMContentLoaded", () => {
 // 11. ログイン時間帯セレクター（0〜23時のボタン群）初期化
 // =================================================================
 function initTimeSelectors() {
-    ['weekdayTimeGrid', 'weekendTimeGrid'].forEach(gridId => {
-        const container = document.getElementById(gridId);
-        for (let i = 0; i < 24; i++) {
-            const btn = document.createElement('button');
-            btn.className = 'time-selector-btn';
-            btn.textContent = i;
-            btn.onclick = () => {
-                btn.classList.toggle('active');
-                renderCanvas(); // 既存のプレビュー描画関数を呼び出す
-            };
-            container.appendChild(btn);
-        }
+    // ['weekdayTimeGrid', 'weekendTimeGrid'].forEach(gridId => {
+    //     const container = document.getElementById(gridId);
+    //     for (let i = 0; i < 24; i++) {
+    //         const btn = document.createElement('button');
+    //         btn.className = 'time-selector-btn';
+    //         btn.textContent = i;
+    //         btn.onclick = () => {
+    //             btn.classList.toggle('active');
+    //             renderCanvas(); // 既存のプレビュー描画関数を呼び出す
+    //         };
+    //         container.appendChild(btn);
+    //     }
+    // });
+    // 平日と休日のグリッド内にあるすべてのボタンを取得
+    const timeButtons = document.querySelectorAll('.time-grid .time-selector-btn');
+
+    // 各ボタンにクリックイベントを設定
+    timeButtons.forEach(btn => {
+        btn.onclick = () => {
+            btn.classList.toggle('active');
+            renderCanvas(); // 既存のプレビュー描画関数を呼び出す
+        };
     });
 }
 // ページ読み込み時に実行される箇所に追加
