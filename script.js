@@ -295,7 +295,7 @@ const uiLabels = {
         shadow: "// 要素の影", shadowColor: "// 影の色", shadowAlpha: "// 透明度", on: "オン", off: "オフ",
         weekday: "// 平日", weekend: "// 休日",
         inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。",
-        mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン",
+        mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色",
         backTextColor: "// 裏面テキストカラー"
     },
     EN: {
@@ -309,7 +309,7 @@ const uiLabels = {
         shadow: "// Shadow ", shadowColor: "// Shadow Color", shadowAlpha: "// Shadow Alpha", on: "ON", off: "OFF",
         weekday: "// Weekdays", weekend: "// Weekends",
         inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",
-        mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",
+        mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background",
         backTextColor: "// Rear Text Color"
     }
 };
@@ -350,6 +350,8 @@ function updateLanguageLabels() {
     document.getElementById('lblMaskOn').textContent = data.maskOn;
     document.getElementById('lblMaskPattern').textContent = data.maskPattern;
     document.getElementById('lblCol3').textContent = data.backTextColor;
+    document.getElementById('lblMaskBack').textContent = data.maskBackColor;
+    
 }
 
 function constructFormOptions() {
@@ -429,8 +431,36 @@ function constructFormOptions() {
     });
 
     // 各フォーム要素への一括イベント登録
+    // document.querySelectorAll('input, select, textarea').forEach(el => {
+    //     if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker') {
+
+    //         // つまみをドラッグしている最中（input）
+    //         el.oninput = function (e) {
+    //             // 1. タイマーが走る前に、現在操作している要素を確保しておく
+    //             const targetElement = e.target;
+
+    //             clearTimeout(colorDebounceTimer);
+    //             colorDebounceTimer = setTimeout(() => {
+    //                 // 2. タイマー発動時に中身が消えないよう、自作のイベントオブジェクトを作る
+    //                 const customEvent = { target: targetElement };
+    //                 updateCard(customEvent);
+    //             }, 10);
+    //         };
+
+    //         // つまみを離した時 / 確定した時（change）
+    //         el.onchange = function (e) {
+    //             const targetElement = e.target;
+    //             updateCard({ target: targetElement });
+    //         };
+    //     } else {
+    //         // その他の一般要素
+    //         el.oninput = function (e) { updateCard(e); };
+    //         el.onchange = function (e) { updateCard(e); };
+    //     }
+    // });
+    // 各フォーム要素への一括イベント登録
     document.querySelectorAll('input, select, textarea').forEach(el => {
-        if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider') {
+        if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker') {
 
             // つまみをドラッグしている最中（input）
             el.oninput = function (e) {
@@ -439,6 +469,11 @@ function constructFormOptions() {
 
                 clearTimeout(colorDebounceTimer);
                 colorDebounceTimer = setTimeout(() => {
+                    // ★ maskColorPicker または backColorPicker が動かされた時は画像レイヤーを再描画
+                    if (targetElement.id === 'maskColorPicker' || targetElement.id === 'backColorPicker') {
+                        drawUserImageLayer();
+                    }
+
                     // 2. タイマー発動時に中身が消えないよう、自作のイベントオブジェクトを作る
                     const customEvent = { target: targetElement };
                     updateCard(customEvent);
@@ -448,6 +483,12 @@ function constructFormOptions() {
             // つまみを離した時 / 確定した時（change）
             el.onchange = function (e) {
                 const targetElement = e.target;
+
+                // ★ 確定時も同様に画像レイヤーを再描画
+                if (targetElement.id === 'maskColorPicker' || targetElement.id === 'backColorPicker') {
+                    drawUserImageLayer();
+                }
+
                 updateCard({ target: targetElement });
             };
         } else {
@@ -1506,6 +1547,65 @@ bgImage.addEventListener('change', (e) => {
 });
 
 // Layer 1: ユーザー画像
+// const drawUserImageLayer = () => {
+//     bgCtx.setTransform(1, 0, 0, 1, 0, 0);
+//     bgCtx.clearRect(0, 0, backgroundLayer.width, backgroundLayer.height);
+//     bgCtx.fillStyle = '#ffffff';
+//     bgCtx.fillRect(0, 0, backgroundLayer.width, backgroundLayer.height);
+
+//     if (imageTransform.img) {
+//         bgCtx.save();
+//         bgCtx.translate(imageTransform.x, imageTransform.y);
+//         bgCtx.scale(imageTransform.scale, imageTransform.scale);
+//         bgCtx.drawImage(imageTransform.img, -imageTransform.img.width / 2, -imageTransform.img.height / 2);
+//         bgCtx.restore();
+//     }
+
+//     // マスクの描画設定
+//     const layoutMask = document.querySelector('input[name="layoutMask"]:checked').value;
+//     if (layoutMask === 'on') {
+//         // 🎭 mask.jpg を使って background-layer 全体をマスク
+//         // （maskCanvas は輝度→アルファ変換済み。白＝残す／黒＝消す）
+//         if (maskCanvas) {
+//             bgCtx.save();
+//             bgCtx.globalCompositeOperation = 'destination-in';
+
+//             // bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
+//             // bgCtx.restore();
+
+//             // // マスクで透明になった部分の「下」に白を敷く
+//             // // （destination-over = 既存の内容の背面に描画するので、
+//             // //   透明部分だけが白で塗りつぶされ、残った画像部分はそのまま）
+//             // bgCtx.save();
+//             // bgCtx.globalCompositeOperation = 'destination-over';
+//             // bgCtx.fillStyle = '#ffffff';
+//             // bgCtx.fillRect(0, 0, backgroundLayer.width, backgroundLayer.height);
+//             const orientation = document.querySelector('input[name="cardOrientation"]:checked')?.value || 'vertical';
+            
+//             if (orientation === 'horizontal') {
+//                 // キャンバスの中心に原点を移動して90度回転
+//                 bgCtx.translate(backgroundLayer.width / 2, backgroundLayer.height / 2);
+//                 bgCtx.rotate(90 * Math.PI / 180);
+                
+//                 // 回転した状態に合わせて、縦横のサイズを入れ替えて全体に引き伸ばす
+//                 bgCtx.drawImage(
+//                     maskCanvas, 
+//                     -backgroundLayer.height / 2, 
+//                     -backgroundLayer.width / 2, 
+//                     backgroundLayer.height, 
+//                     backgroundLayer.width
+//                 );
+//             } else {
+//                 // 縦型のときは通常通りそのまま描画
+//                 bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
+//             }
+//             ///
+            
+//             bgCtx.restore();
+//         }
+//     }
+// };
+// Layer 1: ユーザー画像
 const drawUserImageLayer = () => {
     bgCtx.setTransform(1, 0, 0, 1, 0, 0);
     bgCtx.clearRect(0, 0, backgroundLayer.width, backgroundLayer.height);
@@ -1523,20 +1623,39 @@ const drawUserImageLayer = () => {
     // マスクの描画設定
     const layoutMask = document.querySelector('input[name="layoutMask"]:checked').value;
     if (layoutMask === 'on') {
-        // 🎭 mask.jpg を使って background-layer 全体をマスク
-        // （maskCanvas は輝度→アルファ変換済み。白＝残す／黒＝消す）
         if (maskCanvas) {
             bgCtx.save();
             bgCtx.globalCompositeOperation = 'destination-in';
-            bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
+
+            const orientation = document.querySelector('input[name="cardOrientation"]:checked')?.value || 'vertical';
+            
+            if (orientation === 'horizontal') {
+                // 横型のときは原点を中心に移して90度回転
+                bgCtx.translate(backgroundLayer.width / 2, backgroundLayer.height / 2);
+                bgCtx.rotate(90 * Math.PI / 180);
+                // 縦横のサイズを入れ替えて描画
+                bgCtx.drawImage(
+                    maskCanvas, 
+                    -backgroundLayer.height / 2, 
+                    -backgroundLayer.width / 2, 
+                    backgroundLayer.height, 
+                    backgroundLayer.width
+                );
+            } else {
+                // 縦型のときはそのまま描画
+                bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
+            }
             bgCtx.restore();
 
-            // マスクで透明になった部分の「下」に白を敷く
-            // （destination-over = 既存の内容の背面に描画するので、
-            //   透明部分だけが白で塗りつぶされ、残った画像部分はそのまま）
+            // 🎨 新しいマスク背景色カラーピッカー（maskColorPicker）の色を反映
             bgCtx.save();
+            bgCtx.setTransform(1, 0, 0, 1, 0, 0); // 回転の影響を受けないよう完全にリセット
             bgCtx.globalCompositeOperation = 'destination-over';
-            bgCtx.fillStyle = '#ffffff';
+            
+            // 追加された id="maskColorPicker" から色を取得（無い場合のフォールバックは #ffffff）
+            const customMaskBgColor = document.getElementById('maskColorPicker')?.value || '#ffffff';
+            bgCtx.fillStyle = customMaskBgColor;
+            
             bgCtx.fillRect(0, 0, backgroundLayer.width, backgroundLayer.height);
             bgCtx.restore();
         }
