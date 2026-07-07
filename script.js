@@ -1946,7 +1946,7 @@ document.getElementById('saveBack-btn').addEventListener('click', () => {
 });
 
 document.getElementById('x-btn').addEventListener('click', () => {
-    const shareText = '// #v_cybercard // #FF14キャラクターカード // https://mihaly-v.github.io/cybercard/';
+    const shareText = '// #v_cybercard // #FF14キャラクターカード';
     const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
     window.open(intentUrl, '_blank', 'noopener,noreferrer');
 });
