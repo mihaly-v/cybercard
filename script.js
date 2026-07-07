@@ -1928,7 +1928,7 @@ document.getElementById('save-btn').addEventListener('click', () => {
 
     // 8. 擬似的にリンクを作って自動クリックし、ダウンロードさせる
     const link = document.createElement('a');
-    link.download = 'combined-image.png'; // 保存時のファイル名
+    link.download = 'FRONT-CARD.png'; // 保存時のファイル名
     link.href = dataURL;
     link.click(); // ダウンロード実行
 
