@@ -43,8 +43,8 @@
     <title>FFXIV CHARACTER CARD GENERATOR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Black+Han+Sans&family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400..900&family=Dela+Gothic+One&family=Gasoek+One&family=Hachi+Maru+Pop&family=Major+Mono+Display&family=Montserrat:wght@100..900&family=Notable&family=Noto+Sans+JP&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Hachi+Maru+Pop&family=Kaisei+Opti&family=Meow+Script&family=Montserrat:wght@100..900&family=Orbitron:wght@400..900&family=WDXL+Lubrifont+TC:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -81,16 +81,11 @@
                         <input type="text" id="charName" value="" placeholder="ｱﾙﾌｧﾍﾞｯﾄがｵｽｽﾒです！">
                         <select id="textFontName">
                             <option class="font-orbitron" value="'Orbitron', sans-serif" selected>Orbitron</option>
-                            <option class="font-cinzel" value="'Cinzel', serif">Cinzel</option>
                             <option class="font-cinzeldec" value="'Cinzel Decorative', serif">Cinzel Decorative</option>
                             <option class="font-montserrat" value="'Montserrat', sans-serif">Montserrat</option>
-                            <option class="font-notojp" value="'Noto Sans JP', sans-serif">Noto Sans JP</option>
-                            <option class="font-audiowide" value="'Audiowide', sans-serif">Audiowide</option>
-                            <option class="font-blackhan" value="'Black Han Sans', sans-serif">Black Han Sans</option>
-                            <option class="font-notable" value="'Notable', sans-serif">Notable</option>
-                            <option class="font-gasoek" value="'Gasoek One', sans-serif">Gasoek One</option>
                             <option class="font-hachimaru" value="'Hachi Maru Pop', sans-serif">Hachi Maru Pop</option>
-                            <option class="font-delagothic" value="'Dela Gothic One', sans-serif">Dela Gothic One</option>
+                            <option class="font-kaiseiopti" value="'Kaisei Opti', serif">Kaisei Opti</option>
+                            <option class="font-lubrifont" value="'WDXL Lubrifont TC', sans-serif">WDXL Lubrifont TC</option>
                         </select>
                     </div>
                 </div>
@@ -117,25 +112,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-row ">
-                    <div class="form-group">
-                        <label id="lblMask">// マスク</label>
-                        <div class="flex-row" style="gap:4px; margin-top:2px;">
-                            <label class="radio-label"><input type="radio" name="layoutMask" value="off" checked=""><span id="lblMaskOff">オフ</span></label>
-                            <label class="radio-label"><input type="radio" name="layoutMask" value="on"><span id="lblMaskOn">オン</span></label>
+
+                <div class="mask-settings-container">
+                    <input type="checkbox" id="maskToggle" class="mask-toggle-checkbox">
+                    
+                    <label for="maskToggle" class="mask-settings-summary">
+                        <span class="accordion-arrow">▶</span><label id="lblOpenMask">// Mask Options (クリックで開閉)</label>
+                    </label>
+                    
+                    <div class="mask-settings-content">
+                        <div class="flex-row">
+                            <div class="form-group">
+                                <label id="lblMask">// マスク</label>
+                                <div class="flex-row" style="gap:4px; margin-top:2px;">
+                                    <label class="radio-label"><input type="radio" name="layoutMask" value="off" checked=""><span id="lblMaskOff">オフ</span></label>
+                                    <label class="radio-label"><input type="radio" name="layoutMask" value="on"><span id="lblMaskOn">オン</span></label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblMaskPattern">// マスクパターン</label>
+                                <div class="flex-row" style="gap:4px; margin-top:2px;">
+                                    <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-A.jpg" checked=""><span>A</span></label>
+                                    <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-B.jpg"><span>B</span></label>
+                                    <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-C.jpg"><span>C</span></label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="lblMaskPattern">// マスクパターン</label>
-                        <div class="flex-row" style="gap:4px; margin-top:2px;">
-                            <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-A.jpg" checked=""><span>A</span></label>
-                            <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-B.jpg"><span>B</span></label>
-                            <label class="radio-label"><input type="radio" name="layoutMaskPattern" value="images/mask-C.jpg"><span>C</span></label>
+                        <div class="flex-row">
+                            <div class="form-group">
+                                <label id="lblMaskBack">// マスク背景色</label>
+                                <input type="color" id="maskColorPicker" value="#ffffff">
+                            </div>
+                            <div class="form-group">
+                                <label class="tips" id="lblTips">
+                                    The mask designs are scheduled to be added or modified in future updates.
+                                </label>  
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label id="lblMaskBack">// マスク背景色</label>
-                        <input type="color" id="maskColorPicker" value="#ffffff">
                     </div>
                 </div>
 
@@ -327,17 +340,12 @@
                         <div class="comment-container">
                             <textarea id="backComment" rows="5" placeholder="改行もできます！"></textarea>
                             <select id="textFontComment" class="comment-font-select">
-                                <option class="font-hachimaru" value="'Hachi Maru Pop', sans-serif" selected>Hachi Maru Pop</option>
-                                <option class="font-orbitron" value="'Orbitron', sans-serif">Orbitron</option>
-                                <option class="font-cinzel" value="'Cinzel', serif">Cinzel</option>
+                                <option class="font-orbitron" value="'Orbitron', sans-serif" selected>Orbitron</option>
                                 <option class="font-cinzeldec" value="'Cinzel Decorative', serif">Cinzel Decorative</option>
                                 <option class="font-montserrat" value="'Montserrat', sans-serif">Montserrat</option>
-                                <option class="font-notojp" value="'Noto Sans JP', sans-serif">Noto Sans JP</option>
-                                <option class="font-audiowide" value="'Audiowide', sans-serif">Audiowide</option>
-                                <option class="font-blackhan" value="'Black Han Sans', sans-serif">Black Han Sans</option>
-                                <option class="font-notable" value="'Notable', sans-serif">Notable</option>
-                                <option class="font-gasoek" value="'Gasoek One', sans-serif">Gasoek One</option>
-                                <option class="font-delagothic" value="'Dela Gothic One', sans-serif">Dela Gothic One</option>
+                                <option class="font-hachimaru" value="'Hachi Maru Pop', sans-serif">Hachi Maru Pop</option>
+                                <option class="font-kaiseiopti" value="'Kaisei Opti', serif">Kaisei Opti</option>
+                                <option class="font-lubrifont" value="'WDXL Lubrifont TC', sans-serif">WDXL Lubrifont TC</option>
                             </select>
                         </div>
                     </div>

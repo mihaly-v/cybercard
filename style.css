@@ -14,43 +14,14 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* それぞれのoption用のフォント指定 */
-.font-orbitron  { font-family: 'Orbitron', sans-serif; }
-.font-cinzel    { font-family: 'Cinzel', serif; }
-.font-montserrat{ font-family: 'Montserrat', sans-serif; }
-.font-techmono  { font-family: 'Share Tech Mono', monospace; }
-.font-notojp    { font-family: 'Noto Sans JP', sans-serif; }
-.font-mplus     { font-family: 'M PLUS 1p', sans-serif; }
-.font-notokr    { font-family: 'Noto Sans KR', sans-serif; }
-.font-blackhan  { font-family: 'Black Han Sans', sans-serif; }
-.font-rubik     { font-family: 'Rubik 80s Fade', sans-serif; }
-.font-syncopate { 
-  font-family: 'Syncopate', sans-serif; 
-  text-transform: uppercase; 
-}
-.font-audiowide { 
-  font-family: 'Audiowide', sans-serif; 
-}
-.font-majormono { 
-  font-family: 'Major Mono Display', monospace;
-}
-.font-stalinist { 
-  font-family: 'Stalinist One', sans-serif; 
-}
-.font-notable { 
-  font-family: 'Notable', sans-serif; 
-}
-.font-cinzeldec { 
-  font-family: 'Cinzel Decorative', serif; 
-}
-.font-gasoek { 
-  font-family: 'Gasoek One', sans-serif; 
-}
-.font-delagothic { 
-  font-family: 'Dela Gothic One', sans-serif; 
-}
-.font-hachimaru { 
-  font-family: 'Hachi Maru Pop', sans-serif; 
-}
+.font-orbitron    { font-family: 'Orbitron', sans-serif; }
+.font-cinzeldec   { font-family: 'Cinzel Decorative', serif; }
+.font-montserrat  { font-family: 'Montserrat', sans-serif; }
+.font-meowscript  { font-family: 'Meow Script', cursive; }
+.font-hachimaru   { font-family: 'Hachi Maru Pop', sans-serif; }
+.font-kaiseiopti  { font-family: 'Kaisei Opti', serif; }
+.font-lubrifont   { font-family: 'WDXL Lubrifont TC', sans-serif; }
+
 
 body {
     font-family:  'Noto Sans JP', Arial, sans-serif;
@@ -425,6 +396,75 @@ input[type="color"]::-webkit-color-swatch { border: none; }
 .palette-color { flex: 1; }
 .palette-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; font-family: "Orbitron", Arial, sans-serif; color: #ffffff;}
 
+
+
+
+
+/* --- Mask Options 開閉制御（チェックボックス式） --- */
+
+/* 1. チェックボックス本体は完全に非表示 */
+.mask-toggle-checkbox {
+    display: none;
+}
+
+/* 2. 通常（閉じているとき）の中身の状態 */
+.mask-settings-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-10px);
+    /* 閉じる時は一瞬で消すため、ここには transition を書かない */
+}
+
+/* 3. 開いた状態（チェックが入ったとき）の中身の挙動 */
+.mask-toggle-checkbox:checked ~ .mask-settings-content {
+    max-height: 500px; /* 中身がしっかり収まる十分な高さ */
+    opacity: 1;
+    transform: translateY(0);
+    /* 開くときだけ 0.3秒かけて滑らかに変化させる（2回目以降も100%確実に動きます） */
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* --- デザイン・スタイリング（矢印を残す） --- */
+
+/* ヘッダー全体のデザイン */
+.mask-settings-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: "Orbitron", "Share Tech Mono", monospace;
+    font-weight: bold;
+    outline: none;
+    user-select: none;
+    color: #ffffff;
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+}
+
+/* 矢印（▶）の初期状態 */
+.accordion-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+    font-size: 12px;
+}
+
+/* 開いたときに矢印（▶）を下向き（▼）に回転させる設定 */
+.mask-toggle-checkbox:checked + .mask-settings-summary .accordion-arrow {
+    transform: rotate(90deg);
+}
+
+#lblOpenMask {
+    margin-bottom: 0;
+}
+
+
+
+
+/* プレビュー */
 .preview-wrapper {
     width: 100%;
     max-width: 560px;
@@ -794,4 +834,11 @@ footer {
 
 .hidden {
     display: none;
+}
+.tips {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    display: inline-flex;  /* 横並びにしつつFlexboxを有効にする */
+    align-items: center;   /* 中の文字や要素を上下中央に揃える */
 }

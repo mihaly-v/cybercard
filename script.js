@@ -295,8 +295,8 @@ const uiLabels = {
         shadow: "// 要素の影", shadowColor: "// 影の色", shadowAlpha: "// 透明度", on: "オン", off: "オフ",
         weekday: "// 平日", weekend: "// 休日",
         inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。",
-        mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色",
-        backTextColor: "// 裏面テキストカラー"
+        mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色", openMask: "// マスクオプション (クリックで開閉)",
+        backTextColor: "// 裏面テキストカラー", tips: "マスクのデザインは、今後のアップデートで追加/変更する予定です。"
     },
     EN: {
         charName: "// Character Name", charNameHolder: "RECOMMENDED: ALPHABET",
@@ -309,8 +309,8 @@ const uiLabels = {
         shadow: "// Shadow ", shadowColor: "// Shadow Color", shadowAlpha: "// Shadow Alpha", on: "ON", off: "OFF",
         weekday: "// Weekdays", weekend: "// Weekends",
         inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",
-        mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background",
-        backTextColor: "// Rear Text Color"
+        mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background", openMask: "// Mask Options ( Click to expand/collapse )",
+        backTextColor: "// Rear Text Color", tips: "The mask designs are scheduled to be added or modified in future updates."
     }
 };
 
@@ -351,7 +351,8 @@ function updateLanguageLabels() {
     document.getElementById('lblMaskPattern').textContent = data.maskPattern;
     document.getElementById('lblCol3').textContent = data.backTextColor;
     document.getElementById('lblMaskBack').textContent = data.maskBackColor;
-    
+    document.getElementById('lblTips').textContent = data.tips;
+    document.getElementById('lblOpenMask').textContent = data.openMask; 
 }
 
 function constructFormOptions() {
@@ -1024,8 +1025,9 @@ function renderCanvas() {
     ctxBack.restore();
 
     ctxBack.save();
+    ctxBack.setTransform(1, 0, 0, 1, 0, 0);
     ctxBack.fillStyle = backColor;
-    ctxBack.font = `30px ${fontForComment}`;
+    ctxBack.font = `40px ${fontForComment}`;
     ctxBack.textAlign = 'center';
     ctxBack.textBaseline = 'top';
     wrapAndDrawText(ctxBack, backComment, backW / 2, backH * 0.65, 800, 48);
