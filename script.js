@@ -1949,8 +1949,10 @@ document.getElementById('save-btn').addEventListener('click', () => {
         newWindow = window.open('about:blank', '_blank');
         if (!newWindow) {
             alert('ポップアップがブロックされました。ブラウザの設定でポップアップを許可するか、Safari等の標準ブラウザで開き直してください。');
-            return; // タブが開けなければここで処理を中断
+            return;
         }
+        // 白紙で固まって見えないよう、生成中の表示を即座に入れる
+        newWindow.document.write('<body style="margin:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;">画像を生成中...</body>');
     }
 
     // 2. 現在選択されている向きを取得
@@ -1960,46 +1962,86 @@ document.getElementById('save-btn').addEventListener('click', () => {
     const targetWidth = (orientation === 'vertical') ? 1000 : 1545;
     const targetHeight = (orientation === 'vertical') ? 1545 : 1000;
 
-    // 4. 【重要】保存直前にプレビュー用Canvasのサイズをターゲットの向きに「強制同期」させる
+    // 4. プレビュー用Canvasのサイズをターゲットの向きに強制同期
     backgroundLayer.width = targetWidth;
     backgroundLayer.height = targetHeight;
     uiLayer.width = targetWidth;
     uiLayer.height = targetHeight;
 
-    // 5. 新しいサイズに合わせて、背景（アップロード画像）とUIを再描画して現在の状態を焼き付ける
+    // 5. 背景とUIを再描画(このアプリのdrawUserImageLayerは同期処理なのでawait不要)
     drawUserImageLayer();
     renderCanvas();
 
-    // 6. 画面には表示しない、合成用のcanvasをメモリ上に作成
+    // 6. 合成用のオフスクリーンcanvas
     const offscreenCanvas = document.createElement('canvas');
     offscreenCanvas.width = targetWidth;
     offscreenCanvas.height = targetHeight;
     const oCtx = offscreenCanvas.getContext('2d');
-
-    // 7. サイズが完璧に一致した2つのレイヤーを等倍で綺麗に重ね合わせる
     oCtx.drawImage(backgroundLayer, 0, 0);
     oCtx.drawImage(uiLayer, 0, 0);
 
-    // 8. canvasの内容をデータURL（PNG形式）に変換
-    const dataURL = offscreenCanvas.toDataURL('image/png');
-
-    // 9. ダウンロード・出力処理の切り替え
+    // 9. 出力処理
     if (isIOS && newWindow) {
-        // 【iOS向け】最初に開いておいた空のタブのURLを、生成した画像データに差し替える
-        // これにより、iPhoneのSafari標準の画像表示画面になり、確実に長押し保存が可能になります
-        newWindow.location.href = dataURL;
+        // toBlobが使えない超古い環境向けのフォールバックも用意
+        if (typeof offscreenCanvas.toBlob === 'function') {
+            offscreenCanvas.toBlob((blob) => {
+                if (!blob) {
+                    showErrorInWindow(newWindow, '画像の生成に失敗しました(toBlobがnullを返しました)。');
+                    return;
+                }
+                const blobUrl = URL.createObjectURL(blob);
+                writeImageToWindow(newWindow, blobUrl);
+            }, 'image/png');
+        } else {
+            const dataURL = offscreenCanvas.toDataURL('image/png');
+            writeImageToWindow(newWindow, dataURL);
+        }
     } else {
-        // 【Android/PC向け】擬似的にリンクを作って自動クリックし、ダウンロードさせる
+        const dataURL = offscreenCanvas.toDataURL('image/png');
         const link = document.createElement('a');
         link.download = 'FRONT-CARD.png';
         link.href = dataURL;
         link.click();
     }
 
-    // 10. 【後処理】元のプレビュー状態を維持するために再描画しておく
+    // 10. 元のプレビュー状態を維持
     drawUserImageLayer();
     renderCanvas();
 });
+
+// 新しいタブに画像を書き込む。読み込みに失敗したら白紙ではなくエラー文言を表示する
+function writeImageToWindow(win, src) {
+    win.document.open();
+    win.document.write(
+        '<html><head><title>保存用画像</title></head>' +
+        '<body style="margin:0;background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh;">' +
+        '<img id="result-img" src="' + src + '" style="max-width:100%;height:auto;display:block;">' +
+        '</body></html>'
+    );
+    win.document.close();
+
+    // 画像読み込み失敗時のフォールバック表示(白紙のまま固まるのを防ぐ)
+    const imgEl = win.document.getElementById('result-img');
+    if (imgEl) {
+        imgEl.onerror = () => {
+            showErrorInWindow(win, '画像の読み込みに失敗しました。お手数ですがブラウザの設定でポップアップ/JavaScriptが有効か確認してください。');
+        };
+    }
+}
+
+function showErrorInWindow(win, message) {
+    try {
+        win.document.open();
+        win.document.write(
+            '<body style="margin:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;padding:16px;text-align:center;">' +
+            message +
+            '</body>'
+        );
+        win.document.close();
+    } catch (e) {
+        // 何もできない場合は無視
+    }
+}
 
 // document.getElementById('saveBack-btn').addEventListener('click', () => {
 //     const dataURL = canvasBack.toDataURL('image/png');
@@ -2023,18 +2065,28 @@ document.getElementById('saveBack-btn').addEventListener('click', () => {
             alert('ポップアップがブロックされました。ブラウザの設定でポップアップを許可するか、Safari等の標準ブラウザで開き直してください。');
             return; // タブが開けなければここで処理を中断
         }
+        // 白紙で固まって見えないよう、生成中の表示を即座に入れる
+        newWindow.document.write('<body style="margin:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;">画像を生成中...</body>');
     }
 
-    // 2. canvasBack（裏面）の内容をデータURL（PNG形式）に変換
-    const dataURL = canvasBack.toDataURL('image/png');
-
-    // 3. ダウンロード・出力処理の切り替え
+    // 2. canvasBack(裏面)の内容を出力
     if (isIOS && newWindow) {
-        // 【iOS向け】最初に開いておいた空のタブのURLを、生成した画像データに差し替える
-        // これにより、iPhoneのSafari標準の画像表示画面になり、確実に長押し保存が可能になります
-        newWindow.location.href = dataURL;
+        if (typeof canvasBack.toBlob === 'function') {
+            canvasBack.toBlob((blob) => {
+                if (!blob) {
+                    showErrorInWindow(newWindow, '画像の生成に失敗しました(toBlobがnullを返しました)。');
+                    return;
+                }
+                const blobUrl = URL.createObjectURL(blob);
+                writeImageToWindow(newWindow, blobUrl);
+            }, 'image/png');
+        } else {
+            const dataURL = canvasBack.toDataURL('image/png');
+            writeImageToWindow(newWindow, dataURL);
+        }
     } else {
         // 【Android/PC向け】従来通りの自動ダウンロード
+        const dataURL = canvasBack.toDataURL('image/png');
         const link = document.createElement('a');
         link.download = 'REAR-CARD.png';
         link.href = dataURL;
