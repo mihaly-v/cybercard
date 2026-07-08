@@ -1894,56 +1894,154 @@ document.querySelectorAll('input[name="cardOrientation"]').forEach(radio => {
 // =================================================================
 // 14. 合成とダウンロードの処理
 // =================================================================
+// document.getElementById('save-btn').addEventListener('click', () => {
+//     // 1. 現在選択されている向きを取得
+//     const orientation = document.querySelector('input[name="cardOrientation"]:checked').value;
+
+//     // 2. 保存用のサイズを決定
+//     const targetWidth = (orientation === 'vertical') ? 1000 : 1545;
+//     const targetHeight = (orientation === 'vertical') ? 1545 : 1000;
+
+//     // 3. 【重要】保存直前にプレビュー用Canvasのサイズをターゲットの向きに「強制同期」させる
+//     // これをしないと、Canvasの内部解像度が縦型のままでズレてしまいます
+//     backgroundLayer.width = targetWidth;
+//     backgroundLayer.height = targetHeight;
+//     uiLayer.width = targetWidth;
+//     uiLayer.height = targetHeight;
+
+//     // 4. 新しいサイズに合わせて、背景（アップロード画像）とUIを再描画して現在の状態を焼き付ける
+//     drawUserImageLayer();
+//     renderCanvas();
+
+//     // 5. 画面には表示しない、合成用のcanvasをメモリ上に作成
+//     const offscreenCanvas = document.createElement('canvas');
+//     offscreenCanvas.width = targetWidth;
+//     offscreenCanvas.height = targetHeight;
+//     const oCtx = offscreenCanvas.getContext('2d');
+
+//     // 6. サイズが完璧に一致した2つのレイヤーを等倍で綺麗に重ね合わせる
+//     oCtx.drawImage(backgroundLayer, 0, 0);
+//     oCtx.drawImage(uiLayer, 0, 0);
+
+//     // 7. canvasの内容をデータURL（PNG形式）に変換
+//     const dataURL = offscreenCanvas.toDataURL('image/png');
+
+//     // 8. 擬似的にリンクを作って自動クリックし、ダウンロードさせる
+//     const link = document.createElement('a');
+//     link.download = 'FRONT-CARD.png'; // 保存時のファイル名
+//     link.href = dataURL;
+//     link.click(); // ダウンロード実行
+
+//     // 9. 【後処理】保存が終わったら、元のプレビュー状態を維持するために再描画しておく
+//     drawUserImageLayer();
+//     renderCanvas();
+// });
+
 document.getElementById('save-btn').addEventListener('click', () => {
-    // 1. 現在選択されている向きを取得
+    // 1. OS判定を最初に行う
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    // 【重要】iOSの場合、Safariのポップアップブロックを避けるため、
+    // ボタンがクリックされたこの「最初の瞬間」に空のタブを即座に開いてキープする
+    let newWindow = null;
+    if (isIOS) {
+        newWindow = window.open('about:blank', '_blank');
+        if (!newWindow) {
+            alert('ポップアップがブロックされました。ブラウザの設定でポップアップを許可するか、Safari等の標準ブラウザで開き直してください。');
+            return; // タブが開けなければここで処理を中断
+        }
+    }
+
+    // 2. 現在選択されている向きを取得
     const orientation = document.querySelector('input[name="cardOrientation"]:checked').value;
 
-    // 2. 保存用のサイズを決定
+    // 3. 保存用のサイズを決定
     const targetWidth = (orientation === 'vertical') ? 1000 : 1545;
     const targetHeight = (orientation === 'vertical') ? 1545 : 1000;
 
-    // 3. 【重要】保存直前にプレビュー用Canvasのサイズをターゲットの向きに「強制同期」させる
-    // これをしないと、Canvasの内部解像度が縦型のままでズレてしまいます
+    // 4. 【重要】保存直前にプレビュー用Canvasのサイズをターゲットの向きに「強制同期」させる
     backgroundLayer.width = targetWidth;
     backgroundLayer.height = targetHeight;
     uiLayer.width = targetWidth;
     uiLayer.height = targetHeight;
 
-    // 4. 新しいサイズに合わせて、背景（アップロード画像）とUIを再描画して現在の状態を焼き付ける
+    // 5. 新しいサイズに合わせて、背景（アップロード画像）とUIを再描画して現在の状態を焼き付ける
     drawUserImageLayer();
     renderCanvas();
 
-    // 5. 画面には表示しない、合成用のcanvasをメモリ上に作成
+    // 6. 画面には表示しない、合成用のcanvasをメモリ上に作成
     const offscreenCanvas = document.createElement('canvas');
     offscreenCanvas.width = targetWidth;
     offscreenCanvas.height = targetHeight;
     const oCtx = offscreenCanvas.getContext('2d');
 
-    // 6. サイズが完璧に一致した2つのレイヤーを等倍で綺麗に重ね合わせる
+    // 7. サイズが完璧に一致した2つのレイヤーを等倍で綺麗に重ね合わせる
     oCtx.drawImage(backgroundLayer, 0, 0);
     oCtx.drawImage(uiLayer, 0, 0);
 
-    // 7. canvasの内容をデータURL（PNG形式）に変換
+    // 8. canvasの内容をデータURL（PNG形式）に変換
     const dataURL = offscreenCanvas.toDataURL('image/png');
 
-    // 8. 擬似的にリンクを作って自動クリックし、ダウンロードさせる
-    const link = document.createElement('a');
-    link.download = 'FRONT-CARD.png'; // 保存時のファイル名
-    link.href = dataURL;
-    link.click(); // ダウンロード実行
+    // 9. ダウンロード・出力処理の切り替え
+    if (isIOS && newWindow) {
+        // 【iOS向け】最初に開いておいた空のタブのURLを、生成した画像データに差し替える
+        // これにより、iPhoneのSafari標準の画像表示画面になり、確実に長押し保存が可能になります
+        newWindow.location.href = dataURL;
+    } else {
+        // 【Android/PC向け】擬似的にリンクを作って自動クリックし、ダウンロードさせる
+        const link = document.createElement('a');
+        link.download = 'FRONT-CARD.png';
+        link.href = dataURL;
+        link.click();
+    }
 
-    // 9. 【後処理】保存が終わったら、元のプレビュー状態を維持するために再描画しておく
+    // 10. 【後処理】元のプレビュー状態を維持するために再描画しておく
     drawUserImageLayer();
     renderCanvas();
 });
 
+// document.getElementById('saveBack-btn').addEventListener('click', () => {
+//     const dataURL = canvasBack.toDataURL('image/png');
+//     const link = document.createElement('a');
+//     link.download = 'REAR-CARD.png'; // 保存時のファイル名
+//     link.href = dataURL;
+//     link.click(); // ダウンロード実行
+// });
+
 document.getElementById('saveBack-btn').addEventListener('click', () => {
+    // 1. OS判定を最初に行う
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    // 【重要】iOSの場合、Safariのポップアップブロックを避けるため、
+    // ボタンがクリックされたこの「最初の瞬間」に空のタブを即座に開いてキープする
+    let newWindow = null;
+    if (isIOS) {
+        newWindow = window.open('about:blank', '_blank');
+        if (!newWindow) {
+            alert('ポップアップがブロックされました。ブラウザの設定でポップアップを許可するか、Safari等の標準ブラウザで開き直してください。');
+            return; // タブが開けなければここで処理を中断
+        }
+    }
+
+    // 2. canvasBack（裏面）の内容をデータURL（PNG形式）に変換
     const dataURL = canvasBack.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = 'REAR-CARD.png'; // 保存時のファイル名
-    link.href = dataURL;
-    link.click(); // ダウンロード実行
+
+    // 3. ダウンロード・出力処理の切り替え
+    if (isIOS && newWindow) {
+        // 【iOS向け】最初に開いておいた空のタブのURLを、生成した画像データに差し替える
+        // これにより、iPhoneのSafari標準の画像表示画面になり、確実に長押し保存が可能になります
+        newWindow.location.href = dataURL;
+    } else {
+        // 【Android/PC向け】従来通りの自動ダウンロード
+        const link = document.createElement('a');
+        link.download = 'REAR-CARD.png';
+        link.href = dataURL;
+        link.click();
+    }
 });
+
 
 document.getElementById('x-btn').addEventListener('click', () => {
     const shareText = '// #v_cybercard // #FF14キャラクターカード';
