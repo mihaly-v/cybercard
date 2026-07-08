@@ -2064,7 +2064,7 @@ function showSaveOverlay(dataURL) {
     overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
 
     const hint = document.createElement('p');
-    hint.textContent = '画像を長押しして「写真に保存」を選んでください';
+    hint.textContent = '画像を長押しして保存してください';
     hint.style.cssText = 'color:#fff;font-size:14px;margin-bottom:16px;text-align:center;';
 
     const img = document.createElement('img');
@@ -2073,7 +2073,20 @@ function showSaveOverlay(dataURL) {
 
     const closeBtn = document.createElement('button');
     closeBtn.textContent = '閉じる';
-    closeBtn.style.cssText = 'margin-top:16px;padding:10px 24px;font-size:14px;';
+    // width:240px,height:48px,margin-top:16px;padding:10px 24px;font-size:14px,
+    closeBtn.style.cssText = `
+        background-color: rgba(0, 250, 255, 0.25);
+        color: #ffffff;
+        border: 1px solid #00f0ff;
+        margin-top: 16px;
+        width: 240px;
+        height: 48px;
+        border-radius: 6px;
+        font-size: 16px;
+        font-family: 'Orbitron', sans-serif;
+        cursor: pointer;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    `;
     closeBtn.addEventListener('click', () => overlay.remove());
 
     overlay.appendChild(hint);
