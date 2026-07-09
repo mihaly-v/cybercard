@@ -808,7 +808,7 @@ function renderCanvas() {
     ctx.font = '700 16px "Orbitron", sans-serif';
     ctx.fillText(`ID_NO: ${generatedID}`, 45, 75);
 
-    let padding = 70;
+    let padding = 60;
     let namePt = { x: cardW - padding, y: cardH - 350 };
     let profPt = { x: padding, y: padding + 120 };
     if (orientation === 'vertical') {
