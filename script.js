@@ -1,8 +1,8 @@
 let colorDebounceTimer = null; // カラーピッカーの間引き用タイマー
 
 const CYBER_PANEL_CONFIG = {
-    fontSize: 28,            // 点灯式パネルの文字サイズ
-    font: '700 22px  "Share Tech Mono", monospace',
+    fontSize: 30,            // 点灯式パネルの文字サイズ
+    font: '700 20px  "Share Tech Mono", monospace',
     // font: '700 20px "Orbitron", sans-serif',
     // 縦の間隔（上下の詰まり・くっつきを解消する行間）
     rowHeight: 40,           // 以前の48pxよりさらに少し広げて余裕を持たせました
