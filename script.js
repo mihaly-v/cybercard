@@ -1,24 +1,20 @@
-// =================================================================
-// ⚙️ 【直感的カスタマイズ設定】
-// ここにまとめた数字を変更するだけで、キャンバス内の余白が自動連動します。
-// =================================================================
 let colorDebounceTimer = null; // カラーピッカーの間引き用タイマー
 
 const CYBER_PANEL_CONFIG = {
-    fontSize: 24,            // 点灯式パネルの文字サイズ
-
-    // ↕️ 縦の間隔（上下の詰まり・くっつきを解消する行間）
+    fontSize: 36,            // 点灯式パネルの文字サイズ
+    font: '700 22px  "Share Tech Mono", monospace',
+    font: '700 20px "Orbitron", sans-serif',
+    // 縦の間隔（上下の詰まり・くっつきを解消する行間）
     rowHeight: 40,           // 以前の48pxよりさらに少し広げて余裕を持たせました
 
-    // ↔️ 横の間隔（各項目が右隣と被らないための列の幅）
+    // 横の間隔（各項目が右隣と被らないための列の幅）
     styleColumnWidth: 160,   // PLAY_STYLE（3列）の1列あたりの横幅
     raceColumnWidth: 120,    // FAV_RACE（4列）の1列あたりの横幅
     phaseColumnWidth: 130,   // MSQ_PHASE（2列）の1列あたりの横幅
-
-    // 🔠 ラベルからパネル開始位置までの左マージン
+    
+    // ラベルからパネル開始位置までの左マージン
     offsetX: 180             // PLAY_STYLE: 等の文字から右にどれだけ離すか
 };
-
 
 // =================================================================
 // 1. マスターデータ
@@ -64,28 +60,29 @@ const styleMaster = [
     { id: "ハウジング", jp: "ハウジング", en: "HOUSING" },
     { id: "SS撮影", jp: "SS撮影", en: "SCREENSHOT" },
     { id: "PvP", jp: "PvP", en: "PVP" },
-    { id: "ギャザクラ", jp: "ギャザクラ", en: "CRAFT/GATHER" },
-    { id: "レイド戦闘", jp: "レイド戦闘", en: "RAID/BATTLE" }
+    { id: "クラフター", jp: "クラフター", en: "CRAFTER" },
+    { id: "ギャザラー", jp: "ギャザラー", en: "GATHER" },
+    { id: "レイド/戦闘", jp: "レイド/戦闘", en: "RAID" }
 ];
 
 const raceMaster = [
-    { id: "Hyur", jp: "ヒューラン", en: "Hyur" },
-    { id: "Elezen", jp: "エレゼン", en: "Elezen" },
-    { id: "Lalafell", jp: "ララフェル", en: "Lalafell" },
-    { id: "Miqo'te", jp: "ミコッテ", en: "Miqo'te" },
-    { id: "Roegadyn", jp: "ルガディン", en: "Roegadyn" },
-    { id: "Au Ra", jp: "アウラ", en: "Au Ra" },
-    { id: "Hrothgar", jp: "ロスガル", en: "Hrothgar" },
-    { id: "Viera", jp: "ヴィエラ", en: "Viera" }
+    { id: "Hyur", jp: "ヒューラン", en: "HYUR" },
+    { id: "Elezen", jp: "エレゼン", en: "ELEZEN" },
+    { id: "Lalafell", jp: "ララフェル", en: "LALAFELL" },
+    { id: "Miqo'te", jp: "ミコッテ", en: "MIQO'TE" },
+    { id: "Roegadyn", jp: "ルガディン", en: "ROEGADYN" },
+    { id: "Au Ra", jp: "アウラ", en: "AU RA" },
+    { id: "Hrothgar", jp: "ロスガル", en: "HROTHGAR" },
+    { id: "Viera", jp: "ヴィエラ", en: "VIERA" }
 ];
 
 const progressMaster = [
-    { val: 0, jp: "新生(2.X)", en: "ARR (2.X)" },
-    { val: 1, jp: "蒼天(3.X)", en: "HW (3.X)" },
-    { val: 2, jp: "紅蓮(4.X)", en: "SB (4.X)" },
-    { val: 3, jp: "漆黒(5.X)", en: "ShB (5.X)" },
-    { val: 4, jp: "暁月(6.X)", en: "EW (6.X)" },
-    { val: 5, jp: "黄金(7.X)", en: "DT (7.X)" }
+    { val: 0, jp: "新生(2.X)", en: "ARR 2.x" },
+    { val: 1, jp: "蒼天(3.X)", en: "HW 3.x" },
+    { val: 2, jp: "紅蓮(4.X)", en: "SB 4.x" },
+    { val: 3, jp: "漆黒(5.X)", en: "ShB 5.x" },
+    { val: 4, jp: "暁月(6.X)", en: "EW 6.x" },
+    { val: 5, jp: "黄金(7.X)", en: "DT 7.x" }
 ];
 
 const neonPalettes = [
@@ -176,11 +173,6 @@ const uiCtx = uiLayer.getContext('2d');
 // =================================================================
 // 3. マスク画像読み込み＆輝度→アルファ変換
 // =================================================================
-// JPGにはアルファチャンネルが無いため、そのままdestination-inに使っても
-// マスク効果が出ません（常に不透明=255扱いになるため）。
-// そこで、画素の明るさ(輝度)を計算し、それをアルファ値として書き込んだ
-// 専用キャンバス(maskCanvas)を用意しておきます。
-// → 白い部分ほど「残る（不透明）」、黒い部分ほど「消える（透明）」になります。
 let maskCanvas = null;
 
 function loadMaskImage(src) {
@@ -432,34 +424,6 @@ function constructFormOptions() {
     });
 
     // 各フォーム要素への一括イベント登録
-    // document.querySelectorAll('input, select, textarea').forEach(el => {
-    //     if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker') {
-
-    //         // つまみをドラッグしている最中（input）
-    //         el.oninput = function (e) {
-    //             // 1. タイマーが走る前に、現在操作している要素を確保しておく
-    //             const targetElement = e.target;
-
-    //             clearTimeout(colorDebounceTimer);
-    //             colorDebounceTimer = setTimeout(() => {
-    //                 // 2. タイマー発動時に中身が消えないよう、自作のイベントオブジェクトを作る
-    //                 const customEvent = { target: targetElement };
-    //                 updateCard(customEvent);
-    //             }, 10);
-    //         };
-
-    //         // つまみを離した時 / 確定した時（change）
-    //         el.onchange = function (e) {
-    //             const targetElement = e.target;
-    //             updateCard({ target: targetElement });
-    //         };
-    //     } else {
-    //         // その他の一般要素
-    //         el.oninput = function (e) { updateCard(e); };
-    //         el.onchange = function (e) { updateCard(e); };
-    //     }
-    // });
-    // 各フォーム要素への一括イベント登録
     document.querySelectorAll('input, select, textarea').forEach(el => {
         if (el.id === 'themeColorPicker' || el.id === 'themeColorPicker2' || el.id === 'shadowColorPicker' || el.id === 'backColorPicker' || el.id === 'alphaSlider' || el.id === 'maskColorPicker') {
 
@@ -597,7 +561,6 @@ window.addEventListener('touchmove', handleMove, { passive: false });
 window.addEventListener('mouseup', handleEnd);
 window.addEventListener('touchend', handleEnd);
 
-
 // =================================================================
 // 6. QRコード生成
 // =================================================================
@@ -630,7 +593,6 @@ function updateCard(e) {
     constructFormOptions();
     renderCanvas();
 }
-
 
 // =================================================================
 // 7. 描画ユーティリティ
@@ -778,7 +740,6 @@ document.querySelectorAll('input[name="layoutMaskPattern"]').forEach(radio => {
     });
 });
 
-
 // =================================================================
 // 8. メイン描画処理（カード表面・裏面）
 // =================================================================
@@ -844,7 +805,7 @@ function renderCanvas() {
     applyUiShadowIfEnabled(ctx);
     ctx.fillText('NEO CITIZEN IDENTIFICATION CARD /////', 45, 45);
     ctx.fillStyle = alertColor;
-    ctx.font = 'bold 16px "Share Tech Mono", monospace';
+    ctx.font = '700 16px "Orbitron", sans-serif';
     ctx.fillText(`ID_NO: ${generatedID}`, 45, 75);
 
     let padding = 70;
@@ -865,10 +826,11 @@ function renderCanvas() {
     ctx.fillText(name, namePt.x, namePt.y);
     ctx.fillStyle = themeColor;
     ctx.font = '900 32px "Orbitron", sans-serif';
-    ctx.fillText(`JOB: [ ${targetJobObj.en} ]`, namePt.x, namePt.y + 85);
+    ctx.fillText(`[ JOB:  ${targetJobObj.en} ]`, namePt.x, namePt.y + 85);
     ctx.fillStyle = alertColor;
     ctx.font = 'bold 22px "Share Tech Mono", monospace';
-    ctx.fillText(`[ DC:${dc.toUpperCase()} // WORLD:${world.toUpperCase()} ]`, namePt.x, namePt.y + 125);
+    ctx.font = '900 22px "Orbitron", sans-serif';
+    ctx.fillText(`[ DC: ${dc.toUpperCase()} // ${world.toUpperCase()} ]`, namePt.x, namePt.y + 125);
 
     ctx.font = `bold ${CYBER_PANEL_CONFIG.fontSize}px "Share Tech Mono", monospace`;
 
@@ -876,7 +838,9 @@ function renderCanvas() {
     let currentY = profPt.y;
     ctx.textAlign = 'left';
     ctx.fillStyle = alertColor;
+    ctx.font = '700 20px "Orbitron", sans-serif';
     ctx.fillText('PLAY_STYLE:', profPt.x, currentY);
+    
 
     styleMaster.forEach((s, i) => {
         let col = i % 3, row = Math.floor(i / 3);
@@ -884,12 +848,10 @@ function renderCanvas() {
         // 基本のX座標
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.styleColumnWidth);
 
-        // 3列目（colが2）のときだけ、左にずらして2列目との隙間を調整する
-        if (col === 2) {
-            targetX -= 0; // この数字を動かして、見た目が綺麗に揃う位置に調整してください
+        if (col === 1) {
+            targetX -= 25;
         }
-
-        drawCustomCyberPanel(ctx, s.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedStylesIDs.includes(s.id), themeColor);
+        drawCustomCyberPanel(ctx, s.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedStylesIDs.includes(s.id), themeColor, CYBER_PANEL_CONFIG.font);
     });
 
     // --- FAV_RACE パネル群 ---
@@ -903,14 +865,17 @@ function renderCanvas() {
         // 基本のX座標
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.raceColumnWidth);
 
-        // 3列目（col === 2）以降を左にずらして、2〜3列目の隙間を調整する
-        if (col === 2) {
-            targetX -= 20; // ここで「2列目と3列目の隙間」を調整します
-        } else if (col === 3) {
-            targetX -= 20; // 4列目も一緒にずらさないと、今度は3〜4列目が詰まってしまうので同じだけ引きます
+        switch (col) {
+            case 1:
+            case 2:
+                targetX += 30; // 1と2のときはどちらも +30 する
+                break;
+            case 3:
+                targetX += 60; // 3のときは +60 する
+                break;
         }
 
-        drawCustomCyberPanel(ctx, r.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedRacesIDs.includes(r.id), themeColor);
+        drawCustomCyberPanel(ctx, r.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedRacesIDs.includes(r.id), themeColor, CYBER_PANEL_CONFIG.font);
     });
 
     // --- MSQ_PHASE パネル群 ---
@@ -924,12 +889,13 @@ function renderCanvas() {
         // 基本のX座標を計算
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.phaseColumnWidth);
 
-        // 3列目（colが2）のときだけ、手動で指定ピクセル分左にずらす
-        if (col === 2) {
-            targetX -= 10; // ここの数字を動かして、2列目との隙間とピッタリ合うように微調整してください
+        if (col === 1) {
+            targetX += 5;  // 2列目（col:1）を少し右に
+        } else if (col === 2) {
+            targetX -= 5;  // 3列目（col:2）を少し左に
         }
 
-        drawCustomCyberPanel(ctx, p.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, p.val <= progressVal, themeColor);
+        drawCustomCyberPanel(ctx, p.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, p.val <= progressVal, themeColor, CYBER_PANEL_CONFIG.font);
     });
 
     // 【表面】右下にメインジョブの3文字（アルファベット）をうっすらと表示
@@ -951,7 +917,7 @@ function renderCanvas() {
     ctx.save();
     applyUiShadowIfEnabled(ctx);
     ctx.fillStyle = themeColor; // または alertColor（テーマカラー2）でお好みに合わせてください
-    ctx.font = 'bold 14px "Share Tech Mono", monospace';
+    ctx.font = '700 14px "Orbitron", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
@@ -959,7 +925,7 @@ function renderCanvas() {
     const copyrightX = (405 + (cardW - 165)) / 2;
     const copyrightY = cardH - 55; // バーコードの高さ(42px)の中央に合わせる
 
-    ctx.fillText('//////// [ © SQUARE ENIX ] ////////', copyrightX, copyrightY);
+    ctx.fillText('//////// [ COPYRIGHT: ©SQUARE ENIX ] ////////', copyrightX, copyrightY);
     ctx.restore();
 
     const layoutType = (orientation === 'vertical') ? 'vertical' : 'horizontal';
@@ -1049,7 +1015,6 @@ function renderCanvas() {
 
 /**
  * ログイン時間帯ビジュアライザー
- * 表面の右側に24時間の活動時間をドットで表示します
  */
 function drawLoginTimeVisualizer(ctx, cardW, cardH, themeColor, alertColor, layoutType, pattern) {
     // 【調整用パラメータ：基準位置】
@@ -1327,7 +1292,7 @@ function drawCyberBarcode(targetCtx, x, y, width, height, color, subColor, codeT
 
     if (codeText) {
         targetCtx.fillStyle = color;
-        targetCtx.font = 'bold 14px "Share Tech Mono", monospace';
+        targetCtx.font = '700 14px "Orbitron", sans-serif';
         targetCtx.textAlign = 'center';
         targetCtx.textBaseline = 'top';
         targetCtx.fillText(codeText, x + (width / 2), y + height + 8);
@@ -1335,24 +1300,27 @@ function drawCyberBarcode(targetCtx, x, y, width, height, color, subColor, codeT
     targetCtx.restore();
 }
 
-function drawCustomCyberPanel(tCtx, text, x, y, fSize, active, tCol) {
+function drawCustomCyberPanel(tCtx, text, x, y, fSize, active, tCol, font) {
     const themeColor = themeColorPicker.value;
     const alertColor = themeColorPicker2.value;
     tCtx.save();
     applyUiShadowIfEnabled(tCtx);
     tCtx.font = `bold ${fSize - 4}px "Share Tech Mono", monospace`;
-    let mWidth = tCtx.measureText(text).width + 12;
+    let mWidth = tCtx.measureText(text).width + 16;
     if (active) {
+        tCtx.font = font;
         tCtx.fillStyle = tCol;
-        tCtx.fillRect(x - 6, y - 4, mWidth, fSize + 8);
+        tCtx.fillRect(x - 6, y - 8, mWidth, fSize -4);
         tCtx.fillStyle = getContrastColor(themeColor);
-        tCtx.fillText(text, x, y + 2);
+        tCtx.fillText(text, x, y + 0);
     } else {
+        tCtx.font = font;
         tCtx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-        tCtx.fillRect(x - 6, y - 4, mWidth, fSize + 8);
+        tCtx.fillRect(x - 6, y - 8, mWidth, fSize - 4);
         tCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-        tCtx.fillText(text, x, y + 2);
+        tCtx.fillText(text, x, y + 0);
     }
+    
     tCtx.restore();
 }
 
@@ -1365,7 +1333,7 @@ constructFormOptions();
 updateQrAndCard();
 
 // =================================================================
-// 10. 📱 スマホ用：元の位置を残したまま、独立したオーバーレイプレビューを表示（スクロール完全ロック版）
+// 10. スマホ用：元の位置を残したまま、独立したオーバーレイプレビューを表示（スクロール完全ロック版）
 // =================================================================
 document.addEventListener("DOMContentLoaded", () => {
     // 1. 右下の固定ボタンを生成
@@ -1470,19 +1438,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // 11. ログイン時間帯セレクター（0〜23時のボタン群）初期化
 // =================================================================
 function initTimeSelectors() {
-    // ['weekdayTimeGrid', 'weekendTimeGrid'].forEach(gridId => {
-    //     const container = document.getElementById(gridId);
-    //     for (let i = 0; i < 24; i++) {
-    //         const btn = document.createElement('button');
-    //         btn.className = 'time-selector-btn';
-    //         btn.textContent = i;
-    //         btn.onclick = () => {
-    //             btn.classList.toggle('active');
-    //             renderCanvas(); // 既存のプレビュー描画関数を呼び出す
-    //         };
-    //         container.appendChild(btn);
-    //     }
-    // });
     // 平日と休日のグリッド内にあるすべてのボタンを取得
     const timeButtons = document.querySelectorAll('.time-grid .time-selector-btn');
 
@@ -1548,65 +1503,7 @@ bgImage.addEventListener('change', (e) => {
     reader.readAsDataURL(file);
 });
 
-// Layer 1: ユーザー画像
-// const drawUserImageLayer = () => {
-//     bgCtx.setTransform(1, 0, 0, 1, 0, 0);
-//     bgCtx.clearRect(0, 0, backgroundLayer.width, backgroundLayer.height);
-//     bgCtx.fillStyle = '#ffffff';
-//     bgCtx.fillRect(0, 0, backgroundLayer.width, backgroundLayer.height);
 
-//     if (imageTransform.img) {
-//         bgCtx.save();
-//         bgCtx.translate(imageTransform.x, imageTransform.y);
-//         bgCtx.scale(imageTransform.scale, imageTransform.scale);
-//         bgCtx.drawImage(imageTransform.img, -imageTransform.img.width / 2, -imageTransform.img.height / 2);
-//         bgCtx.restore();
-//     }
-
-//     // マスクの描画設定
-//     const layoutMask = document.querySelector('input[name="layoutMask"]:checked').value;
-//     if (layoutMask === 'on') {
-//         // 🎭 mask.jpg を使って background-layer 全体をマスク
-//         // （maskCanvas は輝度→アルファ変換済み。白＝残す／黒＝消す）
-//         if (maskCanvas) {
-//             bgCtx.save();
-//             bgCtx.globalCompositeOperation = 'destination-in';
-
-//             // bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
-//             // bgCtx.restore();
-
-//             // // マスクで透明になった部分の「下」に白を敷く
-//             // // （destination-over = 既存の内容の背面に描画するので、
-//             // //   透明部分だけが白で塗りつぶされ、残った画像部分はそのまま）
-//             // bgCtx.save();
-//             // bgCtx.globalCompositeOperation = 'destination-over';
-//             // bgCtx.fillStyle = '#ffffff';
-//             // bgCtx.fillRect(0, 0, backgroundLayer.width, backgroundLayer.height);
-//             const orientation = document.querySelector('input[name="cardOrientation"]:checked')?.value || 'vertical';
-            
-//             if (orientation === 'horizontal') {
-//                 // キャンバスの中心に原点を移動して90度回転
-//                 bgCtx.translate(backgroundLayer.width / 2, backgroundLayer.height / 2);
-//                 bgCtx.rotate(90 * Math.PI / 180);
-                
-//                 // 回転した状態に合わせて、縦横のサイズを入れ替えて全体に引き伸ばす
-//                 bgCtx.drawImage(
-//                     maskCanvas, 
-//                     -backgroundLayer.height / 2, 
-//                     -backgroundLayer.width / 2, 
-//                     backgroundLayer.height, 
-//                     backgroundLayer.width
-//                 );
-//             } else {
-//                 // 縦型のときは通常通りそのまま描画
-//                 bgCtx.drawImage(maskCanvas, 0, 0, backgroundLayer.width, backgroundLayer.height);
-//             }
-//             ///
-            
-//             bgCtx.restore();
-//         }
-//     }
-// };
 // Layer 1: ユーザー画像
 const drawUserImageLayer = () => {
     bgCtx.setTransform(1, 0, 0, 1, 0, 0);
@@ -1649,7 +1546,7 @@ const drawUserImageLayer = () => {
             }
             bgCtx.restore();
 
-            // 🎨 新しいマスク背景色カラーピッカー（maskColorPicker）の色を反映
+            //  新しいマスク背景色カラーピッカー（maskColorPicker）の色を反映
             bgCtx.save();
             bgCtx.setTransform(1, 0, 0, 1, 0, 0); // 回転の影響を受けないよう完全にリセット
             bgCtx.globalCompositeOperation = 'destination-over';
