@@ -1,9 +1,9 @@
 let colorDebounceTimer = null; // カラーピッカーの間引き用タイマー
 
 const CYBER_PANEL_CONFIG = {
-    fontSize: 32,            // 点灯式パネルの文字サイズ
+    fontSize: 28,            // 点灯式パネルの文字サイズ
     font: '700 22px  "Share Tech Mono", monospace',
-    font: '700 20px "Orbitron", sans-serif',
+    // font: '700 20px "Orbitron", sans-serif',
     // 縦の間隔（上下の詰まり・くっつきを解消する行間）
     rowHeight: 40,           // 以前の48pxよりさらに少し広げて余裕を持たせました
 
@@ -1315,13 +1315,13 @@ function drawCustomCyberPanel(tCtx, text, x, y, fSize, active, tCol, font) {
     if (active) {
         tCtx.font = font;
         tCtx.fillStyle = tCol;
-        tCtx.fillRect(x - 6, y - 6, mWidth, fSize -4);
+        tCtx.fillRect(x - 6, y - 2, mWidth, fSize -4);
         tCtx.fillStyle = getContrastColor(themeColor);
         tCtx.fillText(text, x, y + 0);
     } else {
         tCtx.font = font;
         tCtx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-        tCtx.fillRect(x - 6, y - 6, mWidth, fSize - 4);
+        tCtx.fillRect(x - 6, y - 2, mWidth, fSize - 4);
         tCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
         tCtx.fillText(text, x, y + 0);
     }
