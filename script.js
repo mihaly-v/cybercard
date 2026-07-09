@@ -1,7 +1,7 @@
 let colorDebounceTimer = null; // カラーピッカーの間引き用タイマー
 
 const CYBER_PANEL_CONFIG = {
-    fontSize: 36,            // 点灯式パネルの文字サイズ
+    fontSize: 32,            // 点灯式パネルの文字サイズ
     font: '700 22px  "Share Tech Mono", monospace',
     font: '700 20px "Orbitron", sans-serif',
     // 縦の間隔（上下の詰まり・くっつきを解消する行間）
@@ -849,7 +849,10 @@ function renderCanvas() {
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.styleColumnWidth);
 
         if (col === 1) {
-            targetX -= 25;
+            targetX -= 15;
+        }
+        if (col === 2) {
+            targetX += 10;
         }
         drawCustomCyberPanel(ctx, s.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, selectedStylesIDs.includes(s.id), themeColor, CYBER_PANEL_CONFIG.font);
     });
@@ -867,11 +870,13 @@ function renderCanvas() {
 
         switch (col) {
             case 1:
+                targetX += 35; // 1と2のときはどちらも +30 する
+                break;
             case 2:
-                targetX += 30; // 1と2のときはどちらも +30 する
+                targetX += 40; // 1と2のときはどちらも +30 する
                 break;
             case 3:
-                targetX += 60; // 3のときは +60 する
+                targetX += 75; // 3のときは +60 する
                 break;
         }
 
@@ -890,9 +895,9 @@ function renderCanvas() {
         let targetX = profPt.x + CYBER_PANEL_CONFIG.offsetX + (col * CYBER_PANEL_CONFIG.phaseColumnWidth);
 
         if (col === 1) {
-            targetX += 5;  // 2列目（col:1）を少し右に
+            targetX += 10;  // 2列目（col:1）を少し右に
         } else if (col === 2) {
-            targetX -= 5;  // 3列目（col:2）を少し左に
+            targetX += 5;  // 3列目（col:2）を少し左に
         }
 
         drawCustomCyberPanel(ctx, p.en, targetX, currentY + (row * CYBER_PANEL_CONFIG.rowHeight), CYBER_PANEL_CONFIG.fontSize, p.val <= progressVal, themeColor, CYBER_PANEL_CONFIG.font);
@@ -1306,17 +1311,17 @@ function drawCustomCyberPanel(tCtx, text, x, y, fSize, active, tCol, font) {
     tCtx.save();
     applyUiShadowIfEnabled(tCtx);
     tCtx.font = `bold ${fSize - 4}px "Share Tech Mono", monospace`;
-    let mWidth = tCtx.measureText(text).width + 16;
+    let mWidth = tCtx.measureText(text).width + 30;
     if (active) {
         tCtx.font = font;
         tCtx.fillStyle = tCol;
-        tCtx.fillRect(x - 6, y - 8, mWidth, fSize -4);
+        tCtx.fillRect(x - 6, y - 6, mWidth, fSize -4);
         tCtx.fillStyle = getContrastColor(themeColor);
         tCtx.fillText(text, x, y + 0);
     } else {
         tCtx.font = font;
         tCtx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-        tCtx.fillRect(x - 6, y - 8, mWidth, fSize - 4);
+        tCtx.fillRect(x - 6, y - 6, mWidth, fSize - 4);
         tCtx.fillStyle = 'rgba(255, 255, 255, 0.45)';
         tCtx.fillText(text, x, y + 0);
     }
