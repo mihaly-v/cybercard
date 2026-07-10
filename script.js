@@ -908,17 +908,18 @@ function renderCanvas() {
     });
 
     // 【表面】右下にメインジョブの3文字（アルファベット）をうっすらと表示
-    ctx.save();
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle = alertColor; // テーマカラー2
-    ctx.globalAlpha = 0.15;     // 透明度（0.1〜0.2程度がうっすら見えて綺麗です）
+    // ctx.save();
+    // ctx.textAlign = 'right';
+    // ctx.textBaseline = 'bottom';
+    // ctx.fillStyle = alertColor; // テーマカラー2
+    // ctx.globalAlpha = 0.15;     // 透明度（0.1〜0.2程度がうっすら見えて綺麗です）
 
-    // カードのサイズや向きに応じてフォントサイズと位置を調整
-    ctx.font = '900 120px "Orbitron", sans-serif';
-    // 右下の余白（バーコードやQRコードの邪魔にならない位置）に配置
-    ctx.fillText("///////" + targetJobObj.code + "//", cardW - 45, cardH - 160);
-    ctx.restore();
+    // // カードのサイズや向きに応じてフォントサイズと位置を調整
+    // ctx.font = '900 120px "Orbitron", sans-serif';
+    // ctx.globalAlpha = 0.15;
+    // // 右下の余白（バーコードやQRコードの邪魔にならない位置）に配置
+    // ctx.fillText("///////" + targetJobObj.code + "//", cardW - 45, cardH - 160);
+    // ctx.restore();
 
     drawCyberBarcode(ctx, 45, cardH - 110, 360, 42, themeColor, alertColor, generatedID);
 
