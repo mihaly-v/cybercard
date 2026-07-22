@@ -128,11 +128,14 @@ header {
     cursor: pointer;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
+.save-full {
+    margin-top: 10px;
+}
 .x-btn {
     position: relative; 
     overflow: hidden;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    margin-top: 18px;
+    margin-bottom: 10px;
     width: 240px;
     height: 48px;
     color: #ffffff;
@@ -506,7 +509,7 @@ input[type="color"]::-webkit-color-swatch { border: none; }
     cursor: move; 
     display: none;
 }
-.inst-text { font-size: 12px; color: #ffffff; text-align: center; margin-top: 4px; margin-bottom: 20px; max-width: 560px; }
+.inst-text, .lban-text { font-size: 12px; color: #ffffff; text-align: center; margin-top: 4px; margin-bottom: 20px; max-width: 560px; }
 
 footer {
     background-color: var(--bg-panel);
@@ -814,7 +817,7 @@ footer {
 .preview_fit {
     width: 100%;
     height: 100%;
-    aspect-ratio: 1000/1545;
+    aspect-ratio: 1000/1593;
 }
 .preview {
     position: relative;

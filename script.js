@@ -54,26 +54,26 @@ const jobMasterCategorized = {
 };
 
 const styleMaster = [
-    { id: "ストーリー", jp: "ストーリー", en: "STORY" },
+    { id: "ストーリー", jp: "ストーリー", en: "STORY " },
     { id: "雑談/RP", jp: "雑談/RP", en: "CHAT/RP" },
     { id: "ミラプリ", jp: "ミラプリ", en: "GLAMOUR" },
     { id: "ハウジング", jp: "ハウジング", en: "HOUSING" },
     { id: "SS撮影", jp: "SS撮影", en: "SCREENSHOT" },
-    { id: "PvP", jp: "PvP", en: "PVP" },
+    { id: "PvP", jp: "PvP", en: "PVP " },
     { id: "クラフター", jp: "クラフター", en: "CRAFTER" },
     { id: "ギャザラー", jp: "ギャザラー", en: "GATHER" },
-    { id: "レイド/戦闘", jp: "レイド/戦闘", en: "RAID" }
+    { id: "レイド/戦闘", jp: "レイド/戦闘", en: "RAID " }
 ];
 
 const raceMaster = [
-    { id: "Hyur", jp: "ヒューラン", en: "HYUR" },
+    { id: "Hyur", jp: "ヒューラン", en: "HYUR " },
     { id: "Elezen", jp: "エレゼン", en: "ELEZEN" },
     { id: "Lalafell", jp: "ララフェル", en: "LALAFELL" },
     { id: "Miqo'te", jp: "ミコッテ", en: "MIQO'TE" },
     { id: "Roegadyn", jp: "ルガディン", en: "ROEGADYN" },
-    { id: "Au Ra", jp: "アウラ", en: "AU RA" },
+    { id: "Au Ra", jp: "アウラ", en: "AU RA " },
     { id: "Hrothgar", jp: "ロスガル", en: "HROTHGAR" },
-    { id: "Viera", jp: "ヴィエラ", en: "VIERA" }
+    { id: "Viera", jp: "ヴィエラ", en: "VIERA " }
 ];
 
 const progressMaster = [
@@ -161,7 +161,7 @@ let startMouseX = 0;
 let startMouseY = 0;
 let cachedQrSourceCanvas = null;
 let BASE_WIDTH = 1000;
-let BASE_HEIGHT = 1545;
+let BASE_HEIGHT = 1593;
 const SCALE_FACTOR = 1.0;
 let CANVAS_WIDTH = BASE_WIDTH * SCALE_FACTOR;
 let CANVAS_HEIGHT = BASE_HEIGHT * SCALE_FACTOR;
@@ -287,7 +287,7 @@ const uiLabels = {
         mainColor: "// メインカラー", subColor: "// サブカラー", preset: "// テーマプリセット",
         shadow: "// 要素の影", shadowColor: "// 影の色", shadowAlpha: "// 透明度", on: "オン", off: "オフ",
         weekday: "// 平日", weekend: "// 休日",
-        inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。",
+        inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。", lban: "*L版サイズのプリントにおすすめのサイズです。",
         mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色", openMask: "// マスクオプション (クリックで開閉)",
         backTextColor: "// 裏面テキストカラー", commentY: "// コメント上下位置", tips: "マスクのデザインは、今後のアップデートで追加/変更する予定です。"
     },
@@ -301,7 +301,7 @@ const uiLabels = {
         mainColor: "// Main Color", subColor: "// Sub Color", preset: "// Presets",
         shadow: "// Shadow ", shadowColor: "// Shadow Color", shadowAlpha: "// Shadow Alpha", on: "ON", off: "OFF",
         weekday: "// Weekdays", weekend: "// Weekends",
-        inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",
+        inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",  lban: "Ideal for 3.5\"x5\" (3R / 89x127mm) size prints!",
         mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background", openMask: "// Mask Options ( Click to expand/collapse )",
         backTextColor: "// Rear Text Color", commentY: "// Rear Comment Y-Pos", tips: "The mask designs are scheduled to be added or modified in future updates."
     }
@@ -338,6 +338,7 @@ function updateLanguageLabels() {
     document.getElementById('lblWeekday').textContent = data.weekday;
     document.getElementById('lblWeekend').textContent = data.weekend;
     document.getElementById('lblInst').textContent = data.inst;
+    document.getElementById('lblLban').textContent = data.lban;
     document.getElementById('lblMask').textContent = data.mask;
     document.getElementById('lblMaskOff').textContent = data.maskOff;
     document.getElementById('lblMaskOn').textContent = data.maskOn;
@@ -627,8 +628,8 @@ function wrapAndDrawText(targetCtx, text, x, y, maxWidth, lineHeight) {
 function renderCanvasLoadImage() {
     const orientation = document.querySelector('input[name="cardOrientation"]:checked').value;
 
-    const cardW = (orientation === 'vertical') ? 1000 : 1545;
-    const cardH = (orientation === 'vertical') ? 1545 : 1000;
+    const cardW = (orientation === 'vertical') ? 1000 : 1593;
+    const cardH = (orientation === 'vertical') ? 1593 : 1000;
     const backW = cardW;
     const backH = cardH;
     canvasLoad.width = cardW;
@@ -777,8 +778,8 @@ function renderCanvas() {
         if (found) targetJobObj = found;
     });
 
-    const cardW = (orientation === 'vertical') ? 1000 : 1545;
-    const cardH = (orientation === 'vertical') ? 1545 : 1000;
+    const cardW = (orientation === 'vertical') ? 1000 : 1593;
+    const cardH = (orientation === 'vertical') ? 1593 : 1000;
     const backW = cardW;
     const backH = cardH;
 
@@ -1824,9 +1825,9 @@ document.querySelectorAll('input[name="cardOrientation"]').forEach(radio => {
         // 1. 向きに応じて基準サイズ（解像度）の数値を更新
         if (orientation === "vertical") {
             BASE_WIDTH = 1000;
-            BASE_HEIGHT = 1545;
+            BASE_HEIGHT = 1593;
         } else {
-            BASE_WIDTH = 1545;
+            BASE_WIDTH = 1593;
             BASE_HEIGHT = 1000;
         }
 
@@ -1865,8 +1866,8 @@ document.getElementById('save-btn').addEventListener('click', async () => {
 
     // 2. 向きとサイズ決定
     const orientation = document.querySelector('input[name="cardOrientation"]:checked').value;
-    const targetWidth = (orientation === 'vertical') ? 1000 : 1545;
-    const targetHeight = (orientation === 'vertical') ? 1545 : 1000;
+    const targetWidth = (orientation === 'vertical') ? 1000 : 1593;
+    const targetHeight = (orientation === 'vertical') ? 1593 : 1000;
 
     const originalWidth = backgroundLayer.width;
     const originalHeight = backgroundLayer.height;
@@ -2010,4 +2011,146 @@ document.getElementById('x-btn').addEventListener('click', () => {
     const shareText = '// #v_cybercard // #FF14キャラクターカード';
     const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
     window.open(intentUrl, '_blank', 'noopener,noreferrer');
+});
+
+
+// =================================================================
+// FRONT-CARD と REAR-CARD を結合保存 (2352×1648)
+// 隙間: 50px / 文字列描画（leftText: 900 / rightText: 600）
+// =================================================================
+document.getElementById('saveCombined-btn').addEventListener('click', async () => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    // 1. 出力用Canvas（2352 x 1648）を作成
+    const combinedCanvas = document.createElement('canvas');
+    combinedCanvas.width = 2352;
+    combinedCanvas.height = 1648;
+    const combinedCtx = combinedCanvas.getContext('2d');
+
+    // 背景色を「白」に指定
+    combinedCtx.fillStyle = '#ffffff';
+    combinedCtx.fillRect(0, 0, combinedCanvas.width, combinedCanvas.height);
+
+    // 2. FRONT-CARD（表面）のオフスクリーンレンダリング
+    const orientation = document.querySelector('input[name="cardOrientation"]:checked').value;
+    const targetWidth = (orientation === 'vertical') ? 1000 : 1593;
+    const targetHeight = (orientation === 'vertical') ? 1593 : 1000;
+
+    const originalWidth = backgroundLayer.width;
+    const originalHeight = backgroundLayer.height;
+
+    // レイヤー解像度を調整して再描画
+    backgroundLayer.width = targetWidth;
+    backgroundLayer.height = targetHeight;
+    uiLayer.width = targetWidth;
+    uiLayer.height = targetHeight;
+
+    drawUserImageLayer();
+    renderCanvas();
+
+    // 表面（FRONT）を1枚のTempCanvasに合成
+    const frontCanvas = document.createElement('canvas');
+    frontCanvas.width = targetWidth;
+    frontCanvas.height = targetHeight;
+    const frontCtx = frontCanvas.getContext('2d');
+    frontCtx.drawImage(backgroundLayer, 0, 0);
+    frontCtx.drawImage(uiLayer, 0, 0);
+
+    // プレビューの描画サイズを復元
+    backgroundLayer.width = originalWidth;
+    backgroundLayer.height = originalHeight;
+    uiLayer.width = originalWidth;
+    uiLayer.height = originalHeight;
+    drawUserImageLayer();
+    renderCanvas();
+
+    // 3. 配置計算 (隙間: 50px)
+    const gap = 50;
+
+    const frontW = frontCanvas.width;
+    const frontH = frontCanvas.height;
+    const rearW = canvasBack.width;
+    const rearH = canvasBack.height;
+
+    // 2枚並べた全体の合計幅
+    const totalWidth = frontW + gap + rearW;
+
+    // 全体の中央（2352pxの中央）に来る開始X座標
+    const startX = (2352 - totalWidth) / 2;
+
+    // --- FRONT-CARD の描画座標 ---
+    const frontX = startX;
+    const frontY = (1648 - frontH) / 2;
+
+    // --- REAR-CARD の描画座標（FRONTの右端 + 隙間 50px） ---
+    const rearX = frontX + frontW + gap;
+    const rearY = (1648 - rearH) / 2;
+
+    // 描画＆0.5pxボーダー処理を行う共通関数
+    function drawCardWithBorder(sourceCanvas, x, y, w, h) {
+        // カード本体
+        combinedCtx.drawImage(sourceCanvas, x, y, w, h);
+
+        // 0.5px solid 薄いグレー (#dddddd)
+        combinedCtx.save();
+        combinedCtx.strokeStyle = '#dddddd';
+        combinedCtx.lineWidth = 0.5;
+        combinedCtx.strokeRect(x + 0.25, y + 0.25, w - 0.5, h - 0.5);
+        combinedCtx.restore();
+    }
+
+    // 左側に FRONT-CARD を描画
+    drawCardWithBorder(frontCanvas, frontX, frontY, frontW, frontH);
+
+    // 右側に REAR-CARD を描画
+    drawCardWithBorder(canvasBack, rearX, rearY, rearW, rearH);
+
+    // 4. テキストの描画処理（左端 ＆ 右端）
+    const activeThemeColor = (typeof themeColor !== 'undefined' && themeColor) ? themeColor : '#00f0ff';
+
+    const leftText = "FFXIV CHARACTER CARD GENERATOR";
+    const rightText = " // #v_cybercard // @Notio_n // @SQUARE ENIX";
+
+    combinedCtx.save();
+    combinedCtx.fillStyle = activeThemeColor;
+    combinedCtx.textBaseline = "middle";
+
+    const centerY = 1648 / 2;
+
+    // --- 左端テキスト描画 (weight: 900) ---
+    const leftMarginX = frontX / 2;
+
+    combinedCtx.save();
+    combinedCtx.font = '900 24px "Orbitron", sans-serif'; // Weight: 900
+    combinedCtx.translate(leftMarginX, centerY);
+    combinedCtx.rotate(-Math.PI / 2);
+    combinedCtx.textAlign = "center";
+    combinedCtx.fillText(leftText, 0, 0);
+    combinedCtx.restore();
+
+    // --- 右端テキスト描画 (weight: 600) ---
+    const rightMarginX = rearX + rearW + ((2352 - (rearX + rearW)) / 2);
+
+    combinedCtx.save();
+    combinedCtx.font = '600 24px "Orbitron", sans-serif'; // Weight: 600 に変更
+    combinedCtx.translate(rightMarginX, centerY);
+    combinedCtx.rotate(-Math.PI / 2);
+    combinedCtx.textAlign = "center";
+    combinedCtx.fillText(rightText, 0, 0);
+    combinedCtx.restore();
+
+    combinedCtx.restore();
+
+    // 5. 保存・出力処理
+    const dataURL = combinedCanvas.toDataURL('image/png');
+
+    if (isIOS) {
+        showSaveOverlay(dataURL);
+    } else {
+        const link = document.createElement('a');
+        link.download = 'COMBINED-CARD.png';
+        link.href = dataURL;
+        link.click();
+    }
 });

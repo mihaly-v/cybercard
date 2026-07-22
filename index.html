@@ -56,7 +56,7 @@
 </head>
 <body>
     <header>
-        <div class="header-title" id="lblHeaderTitle">FFXIV CHARACTER CARD GENERATOR v1.0</div>
+        <div class="header-title" id="lblHeaderTitle">FFXIV CHARACTER CARD GENERATOR v1.1</div>
         <div class="lang-switcher">
             <button id="btnLangJP" class="active">
                 <span class="lang-full">JAPANESE</span>
@@ -378,8 +378,8 @@
                 <div class="preview-wrapper previewFrontPanel" id="previewFrontPanel">
                     <div class="preview-fit">
                         <div class="preview">
-                            <canvas id="background-layer" width="1000" height="1545"></canvas>
-                            <canvas id="ui-layer" width="1000" height="1545"></canvas>
+                            <canvas id="background-layer" width="1000" height="1593"></canvas>
+                            <canvas id="ui-layer" width="1000" height="1593"></canvas>
                         </div>
                     </div>
                     <button class="save-btn" id="save-btn">Save image</button>
@@ -394,7 +394,12 @@
                     </div>
                     <button class="saveBack-btn" id="saveBack-btn">Save image</button>
                 </div>
-                <button class="x-btn" id="x-btn">Share on X</button>
+                <div class="neon-badge">SAVE & SHARE :</div>
+                <div class="preview-wrapper">
+                    <button type="button" id="saveCombined-btn" class="save-btn save-full">SAVE FULL CARD</button>
+                    <div id="lblLban" class="lban-text">*L版サイズのプリントにおすすめのサイズです。</div>
+                    <button class="x-btn" id="x-btn">Share on X</button>
+                </div>
             </div>
         </div>
     </div>
@@ -407,9 +412,9 @@
         <div>Generator System v1.0 // <a href="https://x.com/search?q=%23v_cybercard&f=live" target="_blank" rel="noopener noreferrer" class="footer-link">#v_cybercard</a> // <a href="https://x.com/Notio_n" target="_blank" rel="noopener noreferrer" class="footer-link">@Notio_n</a> // Special Thanks: My Friend</div>
     </footer>
     
-    <canvas id="cardCanvas" width="1000" height="1545"></canvas>
-    <canvas id="cardLoadCanvas" width="1000" height="1545"></canvas>
-    <canvas id="cardCanvasBack" width="1000" height="1545"></canvas>
+    <canvas id="cardCanvas" width="1000" height="1593"></canvas>
+    <canvas id="cardLoadCanvas" width="1000" height="1593"></canvas>
+    <canvas id="cardCanvasBack" width="1000" height="1593"></canvas>
 
     <div id="hiddenQrContainer"></div>
 
