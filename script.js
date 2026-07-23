@@ -287,7 +287,7 @@ const uiLabels = {
         mainColor: "// メインカラー", subColor: "// サブカラー", preset: "// テーマプリセット",
         shadow: "// 要素の影", shadowColor: "// 影の色", shadowAlpha: "// 透明度", on: "オン", off: "オフ",
         weekday: "// 平日", weekend: "// 休日",
-        inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。", lban: "*L版サイズのプリントにおすすめのサイズです。",
+        inst: "*表面プレビューで写真の位置を調整、拡大縮小できます。",
         mask: "// マスク", maskOff: "オフ", maskOn: "オン", maskPattern: "// マスクパターン", maskBackColor: "// マスク背景色", openMask: "// マスクオプション (クリックで開閉)",
         backTextColor: "// 裏面テキストカラー", commentY: "// コメント上下位置", tips: "マスクのデザインは、今後のアップデートで追加/変更する予定です。"
     },
@@ -301,7 +301,7 @@ const uiLabels = {
         mainColor: "// Main Color", subColor: "// Sub Color", preset: "// Presets",
         shadow: "// Shadow ", shadowColor: "// Shadow Color", shadowAlpha: "// Shadow Alpha", on: "ON", off: "OFF",
         weekday: "// Weekdays", weekend: "// Weekends",
-        inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)",  lban: "Ideal for 3.5\"x5\" (3R / 89x127mm) size prints!",
+        inst: "FRONT_PREVIEW // PHOTO_TRANSFORM_ENABLED (Move/Scale)", 
         mask: "// Mask", maskOff: "OFF", maskOn: "ON", maskPattern: "// Mask Pattern",maskBackColor: "// Mask Background", openMask: "// Mask Options ( Click to expand/collapse )",
         backTextColor: "// Rear Text Color", commentY: "// Rear Comment Y-Pos", tips: "The mask designs are scheduled to be added or modified in future updates."
     }
@@ -338,7 +338,6 @@ function updateLanguageLabels() {
     document.getElementById('lblWeekday').textContent = data.weekday;
     document.getElementById('lblWeekend').textContent = data.weekend;
     document.getElementById('lblInst').textContent = data.inst;
-    document.getElementById('lblLban').textContent = data.lban;
     document.getElementById('lblMask').textContent = data.mask;
     document.getElementById('lblMaskOff').textContent = data.maskOff;
     document.getElementById('lblMaskOn').textContent = data.maskOn;
